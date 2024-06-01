@@ -9,6 +9,8 @@ namespace QL_NhanVien.DataAccess.UnitOfWork
         IActualSalaryRespository ActualSalaryObj { get; }
 
         ISubmissionRepository SubmissionObj { get; }
+
+        IAttachedFileRepository AttachedFileObj { get; }
         void Save();
 
     }

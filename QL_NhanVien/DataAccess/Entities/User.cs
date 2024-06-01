@@ -29,11 +29,19 @@ public partial class User
 
     public int? RoleId { get; set; }
 
-    public virtual ICollection<ActualSalary> ActualSalaries { get; set; } = new List<ActualSalary>();
+    public string? Email { get; set; }
 
-    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    public string? GoogleId { get; set; }
+
+    public bool? EmailConfirmed { get; set; }
+
+    public virtual ICollection<ActualSalary> ActualSalaries { get; } = new List<ActualSalary>();
+
+    public virtual ICollection<EmailConfirmation> EmailConfirmations { get; } = new List<EmailConfirmation>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; } = new List<RefreshToken>();
 
     public virtual Role? Role { get; set; }
 
-    public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+    public virtual ICollection<Submission> Submissions { get; } = new List<Submission>();
 }

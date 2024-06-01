@@ -21,6 +21,8 @@ public partial class QLNhanVienContext : DbContext
 
     public virtual DbSet<Claim> Claims { get; set; }
 
+    public virtual DbSet<EmailConfirmation> EmailConfirmations { get; set; }
+
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -33,7 +35,7 @@ public partial class QLNhanVienContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=LAPTOP-30D4OI46\\DUY;Database=QL_NHANVIEN;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-30D4OI46\\DUY;Initial Catalog=QL_NHANVIEN;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +67,18 @@ public partial class QLNhanVienContext : DbContext
             entity.HasKey(e => e.ClaimId).HasName("PK__Claims__EF2E139B35D88EDE");
 
             entity.Property(e => e.ClaimName).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<EmailConfirmation>(entity =>
+        {
+            entity.HasKey(e => e.EmailConfirmationId).HasName("PK__EmailCon__A04DCE811CB28412");
+
+            entity.Property(e => e.ConfirmationCode).HasMaxLength(255);
+            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.User).WithMany(p => p.EmailConfirmations)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__EmailConf__UserI__5DCAEF64");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
@@ -100,7 +114,6 @@ public partial class QLNhanVienContext : DbContext
                     j =>
                     {
                         j.HasKey("RoleId", "ClaimId").HasName("PK__RoleClai__24082F232868E089");
-                        j.ToTable("RoleClaims");
                     });
         });
 
@@ -132,6 +145,9 @@ public partial class QLNhanVienContext : DbContext
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C3F0EC57D");
 
             entity.Property(e => e.ContractSalary).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EmailConfirmed).HasDefaultValueSql("((0))");
+            entity.Property(e => e.GoogleId).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.RefreshToken)
                 .HasMaxLength(255)

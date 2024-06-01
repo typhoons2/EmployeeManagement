@@ -9,5 +9,5 @@ public partial class SubmissionType
 
     public string? SubmissionName { get; set; }
 
-    public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+    public virtual ICollection<Submission> Submissions { get; } = new List<Submission>();
 }

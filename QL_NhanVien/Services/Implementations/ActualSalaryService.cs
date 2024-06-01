@@ -16,5 +16,10 @@ namespace QL_NhanVien.Services.Implementations
             return _unitOfWork.ActualSalaryObj.CreateActualSalry(actualSalary);
             
         }
+
+        public ActualSalary GetActualSalaryByUserId(int userId)
+        {
+            return _unitOfWork.ActualSalaryObj.GetActualSalaryByUserId(userId);
+        }
     }
 }

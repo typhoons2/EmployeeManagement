@@ -5,6 +5,6 @@ namespace QL_NhanVien.Services.Interfaces
 {
     public interface ISubmissionService
     {
-        bool CreateSubmission(SubmissionDTO dto, IFormFile data, int userId);
+        Submission CreateSubmission(SubmissionDTO dto, IFormFile data, int userId);
     }
 }

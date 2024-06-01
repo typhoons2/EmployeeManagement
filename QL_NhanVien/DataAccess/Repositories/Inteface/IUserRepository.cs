@@ -14,5 +14,6 @@ namespace QL_NhanVien.DataAccess.Repositories.Inteface
 
         User GetUserById(int id);
 
+        User GetUserByGoogleIdAsync(string googleId);
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj": {}
+    "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj": {}
   },
   "projects": {
-    "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj": {
+    "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj",
+        "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj",
         "projectName": "QL_NhanVien",
-        "projectPath": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj",
+        "projectPath": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\obj\\",
+        "outputPath": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -43,6 +43,14 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Cookies": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[7.0.20, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",

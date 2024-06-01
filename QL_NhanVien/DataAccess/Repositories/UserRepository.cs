@@ -43,5 +43,10 @@ namespace QL_NhanVien.DataAccess.Repositories
         {
             return _context.Users.FirstOrDefault(u => u.UserId == id);
         }
+
+        public User GetUserByGoogleIdAsync(string googleId)
+        {
+            return _context.Users.FirstOrDefault(u => u.GoogleId == googleId);
+        }
     }
 }

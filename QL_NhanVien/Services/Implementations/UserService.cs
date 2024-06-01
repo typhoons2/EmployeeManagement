@@ -35,5 +35,12 @@ namespace QL_NhanVien.Services.Implementations
         {
             return _unitOfWork.UserObj.UpdateUser(user);
         }
+
+
+
+        User IUserService.GetUserByGoogleIdAsync(string googleId)
+        {
+            return _unitOfWork.UserObj.GetUserByGoogleIdAsync(googleId);
+        }
     }
 }

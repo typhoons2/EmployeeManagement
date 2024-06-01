@@ -9,5 +9,5 @@ public partial class Claim
 
     public string? ClaimName { get; set; }
 
-    public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+    public virtual ICollection<Role> Roles { get; } = new List<Role>();
 }

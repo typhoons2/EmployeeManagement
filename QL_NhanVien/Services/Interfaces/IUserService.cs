@@ -11,5 +11,6 @@ namespace QL_NhanVien.Services.Interfaces
         bool CreateUser(User user);
         bool UpdateUser(User user);
         User GetUserById(int id);
+        User GetUserByGoogleIdAsync(string googleId);
     }
 }

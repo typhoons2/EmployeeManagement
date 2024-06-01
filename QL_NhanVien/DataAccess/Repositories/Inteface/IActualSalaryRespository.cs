@@ -5,5 +5,7 @@ namespace QL_NhanVien.DataAccess.Repositories.Inteface
     public interface IActualSalaryRespository
     {
         bool CreateActualSalry(ActualSalary actualSalary);
+
+        ActualSalary GetActualSalaryByUserId(int userId);
     }
 }

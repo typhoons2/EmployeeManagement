@@ -8,10 +8,15 @@ using QL_NhanVien.Services.Implementations;
 using QL_NhanVien.Services.Interfaces;
 using System.Text;
 using AutoMapper;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using QL_NhanVien.DataAccess.Repositories.Inteface;
+using QL_NhanVien.DataAccess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 // Đăng ký AutoMapper
+
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<QLNhanVienContext>(options => options.UseSqlServer
@@ -20,18 +25,30 @@ builder.Services.AddDbContext<QLNhanVienContext>(options => options.UseSqlServer
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IAttachedFileService, AttachedFileService>();
+builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IActualSalaryService, ActualSalaryService>();
+builder.Services.AddScoped<IAttachedFileRepository, AttachedFileRepository>(); // Giả sử bạn có lớp AttachedFileRepository thực thi IAttachedFileRepository
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+.AddCookie()
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.CallbackPath = new PathString("/signin-google");
+})
+
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters

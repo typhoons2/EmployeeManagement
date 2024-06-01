@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QL_NhanVien.DataAccess.DTOs;
 using QL_NhanVien.DataAccess.Entities;
 using QL_NhanVien.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace QL_NhanVien.Controllers
 {
@@ -12,11 +17,11 @@ namespace QL_NhanVien.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly Services.Interfaces.IAuthenticationService _authenticationService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IActualSalaryService _actualSalaryService;
-        public AuthController(IMapper mapper, IUserService userService, IAuthenticationService authenticationService, IActualSalaryService actualSalaryService)
+        public AuthController(IMapper mapper, IUserService userService, Services.Interfaces.IAuthenticationService authenticationService, IActualSalaryService actualSalaryService)
         {
             _mapper = mapper;
             _userService = userService;
@@ -44,7 +49,7 @@ namespace QL_NhanVien.Controllers
             var acrualSalary = new ActualSalary
             {
                 DaysOff = 0,
-                SalaryAfterDeductions = newUser.ContractSalary,
+                ContractSalary = newUser.ContractSalary,
                 Month = DateTime.Now.Month,
                 Year = DateTime.Now.Year,
                 UserId = newUser.UserId
@@ -83,7 +88,7 @@ namespace QL_NhanVien.Controllers
             var userName = _authenticationService.GetUserName();
             var user = _userService.GetUserByUserName(userName);
             var refreshToken = Request.Cookies["refreshToken"];
-            if(!user.RefreshToken.Equals(refreshToken))
+            if (!user.RefreshToken.Equals(refreshToken))
             {
                 return BadRequest("Invalid refreshToken");
             }
@@ -96,6 +101,62 @@ namespace QL_NhanVien.Controllers
             return Ok(token);
         }
 
+        [HttpGet("google-login")]
+        public IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            var email = result.Principal.FindFirstValue(ClaimTypes.Email);
+            var googleId = result.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = _userService.GetUserByGoogleIdAsync(googleId);
+            if (user == null)
+            {
+                user = new User
+                {
+                    DaysOff = 0,
+                    GoogleId = googleId,
+                    Email = email,
+                    Name = email,
+                    EmailConfirmed= true,
+                    ContractSalary = 0,
+                    RoleId = 1
+                };
+                _userService.CreateUser(user);
+
+                var acrualSalary = new ActualSalary
+                {
+                    DaysOff = 0,
+                    SalaryAfterDeductions = user.ContractSalary,
+                    Month = DateTime.Now.Month,
+                    Year = DateTime.Now.Year,
+                    UserId = user.UserId
+                };
+
+                _actualSalaryService.CreateActualSalary(acrualSalary);
+            }
+
+            string token = _authenticationService.CreateTokenMail(user);
+            var refreshToken = _authenticationService.GenerateRefreshToken();
+            _authenticationService.SetRefreshToken(user, refreshToken);
+
+            return Ok(new
+            {
+                Token = token,
+                RefreshToken = refreshToken.RefToken
+            });
+        }
 
     }
 }

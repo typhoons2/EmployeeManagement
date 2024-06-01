@@ -19,7 +19,7 @@ public partial class Submission
 
     public int? SubmissionTypeId { get; set; }
 
-    public virtual ICollection<AttachedFile> AttachedFiles { get; set; } = new List<AttachedFile>();
+    public virtual ICollection<AttachedFile> AttachedFiles { get; } = new List<AttachedFile>();
 
     public virtual SubmissionType? SubmissionType { get; set; }
 

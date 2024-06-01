@@ -9,7 +9,7 @@ namespace QL_NhanVien.Services.Interfaces
         bool VerifyPasswordHash(string password,  byte[] passwordHash, byte[] passwordSalt);
 
         string CreateToken(User user);
-
+        string CreateTokenMail(User user);
         RefreshToken GenerateRefreshToken();
         void SetRefreshToken(User user, RefreshToken newRefreshToken);
         string GetUserName();

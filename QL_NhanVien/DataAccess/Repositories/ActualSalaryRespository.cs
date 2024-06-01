@@ -18,6 +18,11 @@ namespace QL_NhanVien.DataAccess.Repositories
             return Save();
         }
 
+        public ActualSalary GetActualSalaryByUserId(int userId)
+        {
+            return _context.ActualSalaries.FirstOrDefault(u => u.UserId == userId);
+        }
+
         private bool Save()
         {
             return _context.SaveChanges() > 0;
