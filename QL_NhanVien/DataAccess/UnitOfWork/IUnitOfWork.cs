@@ -11,6 +11,8 @@ namespace QL_NhanVien.DataAccess.UnitOfWork
         ISubmissionRepository SubmissionObj { get; }
 
         IAttachedFileRepository AttachedFileObj { get; }
+
+        IEmailConfirmationRepository EmailConfirmationObj { get; }
         void Save();
 
     }

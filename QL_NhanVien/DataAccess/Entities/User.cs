@@ -35,6 +35,10 @@ public partial class User
 
     public bool? EmailConfirmed { get; set; }
 
+    public string? ConfirmationCode { get; set; }
+
+    public string? EmailConfirmationCode { get; set; }
+
     public virtual ICollection<ActualSalary> ActualSalaries { get; } = new List<ActualSalary>();
 
     public virtual ICollection<EmailConfirmation> EmailConfirmations { get; } = new List<EmailConfirmation>();

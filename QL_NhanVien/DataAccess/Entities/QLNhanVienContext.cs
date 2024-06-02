@@ -144,8 +144,10 @@ public partial class QLNhanVienContext : DbContext
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C3F0EC57D");
 
+            entity.Property(e => e.ConfirmationCode).HasMaxLength(255);
             entity.Property(e => e.ContractSalary).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EmailConfirmationCode).HasMaxLength(255);
             entity.Property(e => e.EmailConfirmed).HasDefaultValueSql("((0))");
             entity.Property(e => e.GoogleId).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj": {}
+    "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj": {
+    "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj",
+        "projectUniqueName": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj",
         "projectName": "QL_NhanVien",
-        "projectPath": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\QL_NhanVien.csproj",
+        "projectPath": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\QL_NhanVien.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ADMIN\\Desktop\\EmployeeManagement-master\\QL_NhanVien\\obj\\",
+        "outputPath": "D:\\thuc_tap\\QL_NhanVien\\QL_NhanVien\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[7.0.19, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.0, )"
@@ -67,6 +71,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Identity.Core": {
               "target": "Package",
               "version": "[7.0.0, )"
             },

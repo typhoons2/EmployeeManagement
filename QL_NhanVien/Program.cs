@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using QL_NhanVien.DataAccess.Repositories.Inteface;
 using QL_NhanVien.DataAccess.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 // Đăng ký AutoMapper
@@ -22,6 +23,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<QLNhanVienContext>(options => options.UseSqlServer
     (builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<QLNhanVienContext>()
+        .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -31,6 +35,8 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IActualSalaryService, ActualSalaryService>();
 builder.Services.AddScoped<IAttachedFileRepository, AttachedFileRepository>(); // Giả sử bạn có lớp AttachedFileRepository thực thi IAttachedFileRepository
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddHttpContextAccessor();
@@ -64,6 +70,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

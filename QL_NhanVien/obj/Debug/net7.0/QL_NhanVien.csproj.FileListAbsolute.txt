@@ -157,3 +157,5 @@ C:\Users\ADMIN\Desktop\EmployeeManagement-master\QL_NhanVien\obj\Debug\net7.0\QL
 C:\Users\ADMIN\Desktop\EmployeeManagement-master\QL_NhanVien\obj\Debug\net7.0\QL_NhanVien.genruntimeconfig.cache
 C:\Users\ADMIN\Desktop\EmployeeManagement-master\QL_NhanVien\obj\Debug\net7.0\ref\QL_NhanVien.dll
 C:\Users\ADMIN\Desktop\EmployeeManagement-master\QL_NhanVien\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\thuc_tap\QL_NhanVien\QL_NhanVien\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\thuc_tap\QL_NhanVien\QL_NhanVien\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

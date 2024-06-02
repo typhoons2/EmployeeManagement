@@ -14,6 +14,8 @@ namespace QL_NhanVien.DataAccess.Repositories
 
         public bool CreateUser(User user)
         {
+            user.EmailConfirmed = false;
+            user.EmailConfirmationCode = Guid.NewGuid().ToString();
             _context.Users.Add(user);
             return Save();
         }

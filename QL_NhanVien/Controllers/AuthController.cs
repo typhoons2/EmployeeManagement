@@ -10,6 +10,7 @@ using QL_NhanVien.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using QL_NhanVien.Services.Implementations;
 
 namespace QL_NhanVien.Controllers
 {
@@ -21,15 +22,120 @@ namespace QL_NhanVien.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IActualSalaryService _actualSalaryService;
-        public AuthController(IMapper mapper, IUserService userService, Services.Interfaces.IAuthenticationService authenticationService, IActualSalaryService actualSalaryService)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailService _emailService;
+        public AuthController(IMapper mapper, IUserService userService, Services.Interfaces.IAuthenticationService authenticationService, IActualSalaryService actualSalaryService, UserManager<IdentityUser> userManager, IEmailService emailService)
         {
             _mapper = mapper;
             _userService = userService;
             _authenticationService = authenticationService;
             _actualSalaryService = actualSalaryService;
+            _userManager = userManager;
+            _emailService = emailService;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register-with-email")]
+        public async Task<ActionResult> RegisterWithEmail(UserRegisterRequestDTO request)
+        {
+            var existingUser = _userService.GetUserByUserName(request.UserName);
+            if (existingUser != null)
+            {
+                return BadRequest("Username is already exist");
+            }
+
+            _authenticationService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var newUser = _mapper.Map<UserRegisterRequestDTO, User>(request);
+
+            newUser.PasswordHash = passwordHash;
+            newUser.PasswordSalt = passwordSalt;
+            newUser.DaysOff = 0;
+
+            _userService.CreateUser(newUser);
+
+            var acrualSalary = new ActualSalary
+            {
+                DaysOff = 0,
+                ContractSalary = newUser.ContractSalary,
+                Month = DateTime.Now.Month,
+                Year = DateTime.Now.Year,
+                UserId = newUser.UserId
+            };
+
+            _actualSalaryService.CreateActualSalary(acrualSalary);
+
+            var userResponse = _mapper.Map<User, UserRegisterRequestDTO>(newUser);
+
+            return Ok(userResponse);
+        }
+
+        //[HttpPost("register-with-email")]
+        //public async Task<IActionResult> RegisterWithEmail([FromBody] RegisterModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new IdentityUser { UserName = model.UserName, Email = model.Email };
+        //        var result = await _userManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Auth", new { userId = user.Id, code }, Request.Scheme);
+
+        //            await _emailService.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
+
+        //            return Ok("Registration successful. Please check your email to confirm your account.");
+        //        }
+        //        return BadRequest(result.Errors);
+        //    }
+        //    return BadRequest("Invalid registration attempt.");
+        //}
+
+        [HttpGet("testemail")]
+        public async Task<IActionResult> TestEmail()
+        {
+            await _emailService.SendEmailAsync("tranvanduy011102@gmail.com", "Test Email", "This is a test email.");
+            return Ok("Test email sent.");
+        }
+
+        [HttpGet("confirmemail")]
+        public IActionResult ConfirmEmail(int userId, string code)
+        {
+            var result = _userService.ConFirmEmail(userId, code);
+            if (result)
+            {
+                return Ok("Email confirmed successfully!");
+            }
+            return BadRequest("Error confirming your email.");
+        }
+
+        //[HttpGet("confirmemail")]
+        //public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        //{
+        //    if (userId == null || code == null)
+        //    {
+        //        return BadRequest("Error confirming your email.");
+        //    }
+
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user == null)
+        //    {
+        //        return BadRequest("User not found.");
+        //    }
+
+        //    var result = await _userManager.ConfirmEmailAsync(user, code);
+        //    if (result.Succeeded)
+        //    {
+        //        return Ok("Email confirmed successfully!");
+        //    }
+
+        //    return BadRequest("Error confirming your email.");
+        //}
+    
+
+
+
+
+
+    [HttpPost("Register")]
 
         public async Task<ActionResult> Register(UserRegisterRequestDTO request)
         {

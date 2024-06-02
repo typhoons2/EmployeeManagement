@@ -8,9 +8,11 @@ namespace QL_NhanVien.Services.Interfaces
         ICollection<User> GetUsers();
 
         User GetUserByUserName(string userName);
-        bool CreateUser(User user);
+        void CreateUser(User user);
         bool UpdateUser(User user);
         User GetUserById(int id);
         User GetUserByGoogleIdAsync(string googleId);
+
+        bool ConFirmEmail(int userId, string code);
     }
 }
