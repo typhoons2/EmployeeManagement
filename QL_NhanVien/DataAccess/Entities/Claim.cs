@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace QL_NhanVien.DataAccess.Entities;
-
-public partial class Claim
+﻿namespace QL_NhanVien.DataAccess.Entities
 {
-    public int ClaimId { get; set; }
+    public class Claim
+    {
+        public int ClaimId { get; set; }
+        public string ClaimName { get; set; }
 
-    public string? ClaimName { get; set; }
-
-    public virtual ICollection<Role> Roles { get; } = new List<Role>();
+        public ICollection<RoleClaim> RoleClaims { get; set; } = new List<RoleClaim>();
+    }
 }

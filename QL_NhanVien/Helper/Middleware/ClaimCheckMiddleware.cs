@@ -11,9 +11,9 @@ namespace QL_NhanVien.Helper.Middleware
         {
             _next = next;
         }
-        public async Task InvokeAsync(HttpContext context,QLNhanVienContext dbContext)
+        public async Task InvokeAsync(HttpContext context, QLNhanVienContext dbContext)
         {
-            if(context.User.Identity.IsAuthenticated)
+            if (context.User.Identity.IsAuthenticated)
             {
                 var userName = context.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
                 var userId = int.Parse(context.User.Claims.First(c => c.Type == "UserId").Value);

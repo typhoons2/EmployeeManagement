@@ -10,6 +10,6 @@ public partial class Role
     public string? RoleName { get; set; }
 
     public virtual ICollection<User> Users { get; } = new List<User>();
+    public ICollection<RoleClaim> RoleClaims { get; set; } = new List<RoleClaim>();
 
-    public virtual ICollection<Claim> Claims { get; } = new List<Claim>();
 }

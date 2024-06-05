@@ -8,7 +8,7 @@ using QL_NhanVien.Services.Interfaces;
 
 namespace QL_NhanVien.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class ClaimController : ControllerBase

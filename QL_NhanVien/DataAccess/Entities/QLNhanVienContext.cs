@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using QL_NhanVien.Migrations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QL_NhanVien.DataAccess.Entities;
 
@@ -15,11 +17,12 @@ public partial class QLNhanVienContext : DbContext
     {
     }
 
+    public virtual DbSet<Claim> Claims { get; set; }
+    public virtual DbSet<RoleClaim> RoleClaims { get; set; }
+
     public virtual DbSet<ActualSalary> ActualSalaries { get; set; }
 
     public virtual DbSet<AttachedFile> AttachedFiles { get; set; }
-
-    public virtual DbSet<Claim> Claims { get; set; }
 
     public virtual DbSet<EmailConfirmation> EmailConfirmations { get; set; }
 
@@ -39,6 +42,8 @@ public partial class QLNhanVienContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+
         modelBuilder.Entity<ActualSalary>(entity =>
         {
             entity.HasKey(e => e.ActualSalaryId).HasName("PK__ActualSa__C60C25303867113D");
@@ -60,13 +65,6 @@ public partial class QLNhanVienContext : DbContext
             entity.HasOne(d => d.Submission).WithMany(p => p.AttachedFiles)
                 .HasForeignKey(d => d.SubmissionId)
                 .HasConstraintName("FK__AttachedF__Submi__4D94879B");
-        });
-
-        modelBuilder.Entity<Claim>(entity =>
-        {
-            entity.HasKey(e => e.ClaimId).HasName("PK__Claims__EF2E139B35D88EDE");
-
-            entity.Property(e => e.ClaimName).HasMaxLength(255);
         });
 
         modelBuilder.Entity<EmailConfirmation>(entity =>
@@ -99,22 +97,6 @@ public partial class QLNhanVienContext : DbContext
             entity.HasKey(e => e.RoleId).HasName("PK__Roles__8AFACE1AA9F669A2");
 
             entity.Property(e => e.RoleName).HasMaxLength(255);
-
-            entity.HasMany(d => d.Claims).WithMany(p => p.Roles)
-                .UsingEntity<Dictionary<string, object>>(
-                    "RoleClaim",
-                    r => r.HasOne<Claim>().WithMany()
-                        .HasForeignKey("ClaimId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__RoleClaim__Claim__3F466844"),
-                    l => l.HasOne<Role>().WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__RoleClaim__RoleI__3E52440B"),
-                    j =>
-                    {
-                        j.HasKey("RoleId", "ClaimId").HasName("PK__RoleClai__24082F232868E089");
-                    });
         });
 
         modelBuilder.Entity<Submission>(entity =>
@@ -163,8 +145,32 @@ public partial class QLNhanVienContext : DbContext
                 .HasConstraintName("FK__Users__RoleId__398D8EEE");
         });
 
+        modelBuilder.Entity<Claim>(entity =>
+        {
+            entity.HasKey(e => e.ClaimId).HasName("PK_Claims");
+
+            entity.Property(e => e.ClaimName).IsRequired().HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<RoleClaim>(entity =>
+        {
+            entity.HasKey(e => new { e.RoleId, e.ClaimId }).HasName("PK_RoleClaims");
+
+            entity.HasOne(d => d.Role)
+                .WithMany(p => p.RoleClaims)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Claim)
+                .WithMany(p => p.RoleClaims)
+                .HasForeignKey(d => d.ClaimId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
+

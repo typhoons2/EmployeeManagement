@@ -14,13 +14,13 @@ namespace QL_NhanVien.Helper.Middleware
         {
             var user = await _context.Users
                 .Include(u => u.Role)
-                    .ThenInclude(r => r.Claims)
-                        .ThenInclude(rc => rc.ClaimName).FirstOrDefaultAsync(u => u.UserId == userId);
+                    .ThenInclude(r => r.RoleClaims)
+                        .ThenInclude(rc => rc.Claim).FirstOrDefaultAsync(u => u.UserId == userId);
             if (user == null)
             {
                 return new List<string>();
             }
-            return user.Role.Claims.Select(rc => rc.ClaimName).ToList();
+            return user.Role.RoleClaims.Select(rc => rc.Claim.ClaimName).ToList();
         }
     }
 }
