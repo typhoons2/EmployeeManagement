@@ -64,7 +64,7 @@ namespace QL_NhanVien.Controllers
             var salaryUser = _actualSalaryService.GetActualSalaryByUserId(id);
             var user = _userService.GetUserById(id);
             decimal deductionAmount = (decimal)((decimal)salaryUser.ContractSalary  * (decimal)salaryUser.DaysOff * 0.05m);
-
+            salaryUser.SalaryAfterDeductions = salaryUser.ContractSalary - deductionAmount;
 
             return Ok(deductionAmount);
         }

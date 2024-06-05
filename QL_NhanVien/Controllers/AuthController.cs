@@ -167,6 +167,32 @@ namespace QL_NhanVien.Controllers
             return(Ok(userResponse));
             
         }
+
+        [HttpPost("Login-check-email")]
+
+        public async Task<ActionResult> LoginCheckEmail(UserLoginRequest login)
+        {
+            var user = _userService.GetUserByUserName(login.UserName);
+            if (user == null)
+            {
+                return BadRequest("user not found");
+
+            }
+            if (!_authenticationService.VerifyPasswordHash(login.Password, user.PasswordHash, user.PasswordSalt))
+            {
+                return BadRequest("Wrong Password");
+            }
+            if (user.EmailConfirmed != false)
+            {
+                return BadRequest("Please verify via email to continue");
+            }
+            string token = _authenticationService.CreateToken(user);
+            var refreshToken = _authenticationService.GenerateRefreshToken();
+            _authenticationService.SetRefreshToken(user, refreshToken);
+
+            return (Ok(token));
+        }
+
         [HttpPost("Login")]
 
         public async Task<ActionResult> Login(UserLoginRequest login)

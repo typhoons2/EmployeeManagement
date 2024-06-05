@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAttachedFileService, AttachedFileService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IClaimService, ClaimService>();
 
 builder.Services.AddScoped<IActualSalaryService, ActualSalaryService>();
 builder.Services.AddScoped<IAttachedFileRepository, AttachedFileRepository>(); // Giả sử bạn có lớp AttachedFileRepository thực thi IAttachedFileRepository

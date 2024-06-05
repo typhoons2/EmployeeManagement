@@ -16,6 +16,8 @@ namespace QL_NhanVien.DataAccess.UnitOfWork
 
         public IEmailConfirmationRepository EmailConfirmationObj { get; private set; }
 
+        public IClaimRespository ClaimObj { get; private set; }
+
         public QLNhanVienContext _db;
         public UnitOfWork( QLNhanVienContext db)
         { 
@@ -25,6 +27,7 @@ namespace QL_NhanVien.DataAccess.UnitOfWork
             SubmissionObj = new SubmissionRepository(_db);
             AttachedFileObj = new AttachedFileRepository(_db);
             EmailConfirmationObj = new EmailConfirmationRespository( _db);
+            ClaimObj = new ClaimRespository( _db);
         }
 
         public void Save()

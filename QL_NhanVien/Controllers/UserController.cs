@@ -48,6 +48,7 @@ namespace QL_NhanVien.Controllers
         }
 
 
+
         [HttpPost("{id}"), Authorize(Roles ="2")]
         public async Task<IActionResult> UpdateUser(int id, UserUpdateRequestDTO request)
         {
